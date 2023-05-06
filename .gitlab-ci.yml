@@ -22,5 +22,7 @@ deploy:
   script:
     - scp -o StrictHostKeyChecking=no -r public user@host.edu:/home/username
     - ssh -o StrictHostKeyChecking=no user@host.edu "cd /home/username; cp -r public /path/to/final/dest"
+  only:
+    - gh-pages
 
 
