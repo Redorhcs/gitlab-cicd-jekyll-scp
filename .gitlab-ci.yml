@@ -1,4 +1,5 @@
 generate-pages:
+  stage: test
   image: ruby:2.7
   script:
     - gem install bundler
@@ -8,9 +9,10 @@ generate-pages:
     paths:
       - public
 
-deploy:
+production:
+  stage: deploy
   needs:
-    - job: generate-pages
+    - job: generate-pages # inherit the artifact created from previous stage in pipeline
       artifacts: true
   image: alpine
   before_script:
@@ -23,6 +25,6 @@ deploy:
     - scp -o StrictHostKeyChecking=no -r public user@host.edu:/home/username
     - ssh -o StrictHostKeyChecking=no user@host.edu "cd /home/username; cp -r public /path/to/final/dest"
   only:
-    - gh-pages
+    - gh-pages # restrict to only running from your main/production branch. prevents accidential test-in-prod!
 
 
