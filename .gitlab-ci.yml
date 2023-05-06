@@ -23,7 +23,7 @@ production:
     - chmod 700 ~/.ssh
   script:
     - scp -o StrictHostKeyChecking=no -r public user@host.edu:/home/username
-    - ssh -o StrictHostKeyChecking=no user@host.edu "cd /home/username; cp -r public /path/to/final/dest"
+    - ssh -o StrictHostKeyChecking=no user@host.edu "cd /home/username; rsync -a public/ /path/to/final/dest/; cd ~; rm -r public" # cd to home dir, sync artifact to final dest on server, delete artifact from server.
   only:
     - gh-pages # restrict to only running from your main/production branch. prevents accidential test-in-prod!
 
